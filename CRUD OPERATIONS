@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<head>
+    <title>CRUD OPERATIONS</title>
+   <center> <h1>Registration List</h1></center>
+    <style>
+        head{
+    background-color: blanchedalmond;
+    background-size: cover;
+    text-align: center;
+}
+
+body{
+background-color: blanchedalmond;
+}
+.tb1{
+    background-color: burlywood;
+    border: 1;
+    border-radius: 3%;
+    width: 1000px;
+    background-attachment: fixed ;
+}
+form{
+    padding: 5%;
+}
+label{
+margin-top: 5px;
+}
+input{
+    border: 1;
+    padding: 2%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: blanchedalmond;
+}
+#storeList{
+    background-color: blanchedalmond;
+    margin: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.t1{
+    width: 280px;
+    margin-left: 20px;
+    block-size: auto;
+}
+.t2{
+    width: 690px;
+}
+thead{
+    width: 690px;
+}
+.list{
+    padding-top: 2px;
+    padding-bottom: 2px;
+    width: 690px;
+    
+}
+button{
+    background-color: burlywood;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+    </style>
+</head>
+
+<body>
+    <center>
+    <table class="tb1">
+        <tr>
+            <td class="t1">
+                <form autocomplete="off" onsubmit="onFormSubmit()">
+                    <div>
+                        <label for="fullName">Full Name</label><br>
+                        <input type="text" name="fullName" id="fullName" required>
+                    </div>
+                    <div>
+                        <label for="redgNum">Registration Number</label><br>
+                        <input type="text" name="redgNum" id="redgNum" required>
+                    </div>
+                    <div>
+                        <label for="phno">Contact Number</label><br>
+                        <input type="number" name="phno" id="phno" required>
+                    </div>
+                    <div>
+                        <label for="cgpa">CGPA</label><br>
+                        <input type="number" name="cgpa" id="cgpa" required>
+                    </div>
+                    <div>
+                        <label for="skills">Skills</label><br>
+                        <input type="text" name="skills" id="skills" required>
+                    </div><br>
+                    <div class="form_action--button">
+                        <input type="submit" value="Submit">
+                        <input type="reset" value="Reset">
+                    </div>
+                </form>
+
+                <td class="t2">
+                    <table class="list" id="storeList">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Registration Number</th>
+                                <th>Contact Number</th>
+                                <th>CGPA</th>
+                                <th>Skills</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </td>
+            </td>
+        </tr>
+    </table></center></body>
+    <script>
+
+var selectedRow = null
+
+function onFormSubmit(e) {
+	event.preventDefault();
+        var formData = readFormData();
+        if (selectedRow == null){
+            insertNewRecord(formData);
+		}
+        else{
+            updateRecord(formData);
+		}
+        resetForm();    
+}
+
+//Retrieve the data
+function readFormData() {
+    var formData = {};
+    formData["fullName"] = document.getElementById("fullName").value;
+    formData["redgNum"] = document.getElementById("redgNum").value;
+    formData["phno"] = document.getElementById("phno").value;
+    formData["cgpa"] = document.getElementById("cgpa").value;
+    formData["skills"]=document.getElementById("skills").value;
+    return formData;
+}
+
+//Insert the data
+function insertNewRecord(data) {
+    var table = document.getElementById("storeList").getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow(table.length);
+    cell1 = newRow.insertCell(0);
+		cell1.innerHTML = data.fullName;
+    cell2 = newRow.insertCell(1);
+		cell2.innerHTML = data.redgNum;
+    cell3 = newRow.insertCell(2);
+		cell3.innerHTML = data.phno;
+    cell4 = newRow.insertCell(3);
+		cell4.innerHTML = data.cgpa;
+    cell5=newRow.insertCell(4);
+    cell5.innerHTML=data.skills;
+    cell6 = newRow.insertCell(5);
+        cell6.innerHTML = <button onClick="onEdit(this)">Edit</button> <button onClick="onDelete(this)">Delete</button>;
+}
+
+//Edit the data
+function onEdit(td) {
+    selectedRow = td.parentElement.parentElement;
+    document.getElementById("fullName").value = selectedRow.cells[0].innerHTML;
+    document.getElementById("redgNum").value = selectedRow.cells[1].innerHTML;
+    document.getElementById("phno").value = selectedRow.cells[2].innerHTML;
+    document.getElementById("cgpa").value = selectedRow.cells[3].innerHTML;
+    document.getElementById("skills").value = selectedRow.cells[4].innerHTML;
+
+}
+function updateRecord(formData) {
+    selectedRow.cells[0].innerHTML = formData.fullName;
+    selectedRow.cells[1].innerHTML = formData.redgNum;
+    selectedRow.cells[2].innerHTML = formData.phno;
+    selectedRow.cells[3].innerHTML = formData.cgpa;
+    selectedRow.cells[4].innerHTML = formData.skills;
+
+}
+
+//Delete the data
+function onDelete(td) {
+    if (confirm('Do you want to delete this record?')) {
+        row = td.parentElement.parentElement;
+        document.getElementById('storeList').deleteRow(row.rowIndex);
+        resetForm();
+    }
+}
+
+//Reset the data
+function resetForm() {
+    document.getElementById("fullName").value = '';
+    document.getElementById("redgNum").value = '';
+    document.getElementById("phno").value = '';
+    document.getElementById("cgpa").value = '';
+    document.getElementById("skills").value = '';
+    selectedRow = null;
+}
+    </script>
+</html>
